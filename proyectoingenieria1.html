@@ -1,150 +1,1110 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Sistema de Becas y Soporte</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background-color: #f9f9f9;
-    }
-    header {
-      background-color: #fff;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ddd;
-    }
-    header h1 {
-      font-size: 18px;
-      margin: 0;
-    }
-    nav a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #555;
-    }
-    .hero {
-      background: linear-gradient(to right, #276ef1, #2247d5);
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-    }
-    .hero h2 {
-      margin: 0 0 10px;
-      font-size: 32px;
-    }
-    .hero p {
-      font-size: 16px;
-    }
-    .buttons {
-      margin-top: 20px;
-    }
-    .buttons a {
-      background-color: #1c4ed8;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      margin: 0 5px;
-      border-radius: 6px;
-      font-weight: 600;
-    }
-    .cards {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 30px 20px;
-      flex-wrap: wrap;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      width: 250px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .card h3 {
-      margin: 10px 0 5px;
-    }
-    .card p {
-      font-size: 14px;
-      color: #444;
-    }
-    .card a {
-      text-decoration: none;
-      color: #276ef1;
-      font-weight: bold;
-    }
-    .footer-buttons {
-      text-align: center;
-      padding: 20px;
-    }
-    .footer-buttons a {
-      background-color: #1d3fc6;
-      color: white;
-      padding: 10px 16px;
-      margin: 5px;
-      text-decoration: none;
-      border-radius: 6px;
-      display: inline-block;
-      font-weight: 600;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecosistema de Aprendizaje Virtual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #64748b;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #475569;
+            transform: translateY(-2px);
+        }
+        
+        .header-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        }
+        
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Estilos específicos para móvil */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 50;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 40;
+        }
+
+        @media (min-width: 768px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Navbar -->
+        <nav class="bg-white shadow-md py-3 px-4 sticky top-0 z-30">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span class="font-bold text-lg text-gray-800 truncate">Ecosistema Virtual</span>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <button class="text-gray-600 hover:text-blue-600 transition" onclick="showScreen('inicio')">Inicio</button>
+                    <button class="text-gray-600 hover:text-blue-600 transition" onclick="showScreen('postulacion')">Postulación</button>
+                    <button class="text-gray-600 hover:text-blue-600 transition" onclick="showScreen('seguimiento')">Seguimiento</button>
+                    <button class="text-gray-600 hover:text-blue-600 transition" onclick="showScreen('soporte')">Soporte</button>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-200 transition">Ingresar</button>
+                    <button class="md:hidden" onclick="toggleMobileMenu()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
 
-  <header>
-    <h1>📘 Ecosistema Virtual</h1>
-    <nav>
-      <a href="#">Inicio</a>
-      <a href="#">Postulación</a>
-      <a href="#">Seguimiento</a>
-      <a href="#">Soporte</a>
-      <a href="#" style="background:#dbe9ff; padding:5px 10px; border-radius:5px;">Ingresar</a>
-    </nav>
-  </header>
+        <!-- Menú móvil -->
+        <div id="mobileMenu" class="mobile-menu">
+            <div class="p-4 flex justify-between items-center border-b">
+                <h2 class="font-bold text-xl">Menú</h2>
+                <button onclick="toggleMobileMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-4">
+                <ul class="space-y-4">
+                    <li>
+                        <button class="w-full text-left py-2 px-3 rounded-md hover:bg-blue-50 flex items-center" onclick="showScreen('inicio'); toggleMobileMenu()">
+                            <i class="fas fa-home w-6"></i>
+                            <span class="ml-2">Inicio</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="w-full text-left py-2 px-3 rounded-md hover:bg-blue-50 flex items-center" onclick="showScreen('postulacion'); toggleMobileMenu()">
+                            <i class="fas fa-file-alt w-6"></i>
+                            <span class="ml-2">Postulación</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="w-full text-left py-2 px-3 rounded-md hover:bg-blue-50 flex items-center" onclick="showScreen('estado'); toggleMobileMenu()">
+                            <i class="fas fa-search w-6"></i>
+                            <span class="ml-2">Estado de solicitud</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="w-full text-left py-2 px-3 rounded-md hover:bg-blue-50 flex items-center" onclick="showScreen('seguimiento'); toggleMobileMenu()">
+                            <i class="fas fa-chart-line w-6"></i>
+                            <span class="ml-2">Seguimiento</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="w-full text-left py-2 px-3 rounded-md hover:bg-blue-50 flex items-center" onclick="showScreen('soporte'); toggleMobileMenu()">
+                            <i class="fas fa-headset w-6"></i>
+                            <span class="ml-2">Soporte</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="mt-6 pt-6 border-t">
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium">
+                        Ingresar a mi cuenta
+                    </button>
+                </div>
+            </div>
+        </div>
 
-  <section class="hero">
-    <h2>Sistema de Becas y Soporte</h2>
-    <p>Apoyamos tu camino académico con recursos para garantizar tu éxito</p>
-    <div class="buttons">
-      <a href="#">📋 Postúlate a una beca</a>
-      <a href="#">🔐 Ingresar</a>
-    </div>
-  </section>
+        <!-- Pantalla de Inicio -->
+        <div id="inicio" class="screen active flex-grow pb-16">
+            <div class="header-gradient text-white py-10 px-4">
+                <div class="container mx-auto text-center">
+                    <h1 class="text-2xl md:text-5xl font-bold mb-4">Sistema de Becas y Soporte</h1>
+                    <p class="text-lg md:text-2xl mb-6 max-w-3xl mx-auto">Apoyamos tu camino académico con recursos para garantizar tu éxito</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-3">
+                        <button class="bg-white text-blue-700 px-5 py-2.5 rounded-lg font-semibold hover:bg-blue-50 transition shadow-lg w-full sm:w-auto" onclick="showScreen('postulacion')">
+                            <i class="fas fa-graduation-cap mr-2"></i>Postúlate a una beca
+                        </button>
+                        <button class="bg-blue-700 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-blue-800 transition shadow-lg w-full sm:w-auto">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Ingresar
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-  <section class="cards">
-    <div class="card">
-      <h3>📌 Becas Académicas</h3>
-      <p>Apoyos económicos basados en tu rendimiento y situación.</p>
-      <a href="#">Conocer más →</a>
-    </div>
-    <div class="card">
-      <h3>🏠 Recursos Tecnológicos</h3>
-      <p>Préstamo de equipos y conectividad para tus estudios.</p>
-      <a href="#">Solicitar →</a>
-    </div>
-    <div class="card">
-      <h3>👨‍🏫 Tutorías Personalizadas</h3>
-      <p>Acompañamiento académico para tu aprendizaje.</p>
-      <a href="#">Agendar →</a>
-    </div>
-    <div class="card">
-      <h3>📈 Seguimiento Académico</h3>
-      <p>Monitoreo de tu progreso para identificar mejoras.</p>
-      <a href="#">Ver progreso →</a>
-    </div>
-  </section>
+            <div class="container mx-auto py-8 px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="card bg-white p-5 rounded-xl shadow-md hover:shadow-xl">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-3">
+                            <i class="fas fa-hand-holding-usd text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Becas Académicas</h3>
+                        <p class="text-gray-600 mb-3 text-sm">Apoyos económicos basados en tu rendimiento y situación.</p>
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition text-sm" onclick="showScreen('postulacion')">Conocer más <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
 
-  <section class="footer-buttons">
-    <h2>¿Cómo podemos ayudarte hoy?</h2>
-    <a href="#">📋 Postúlate a una beca</a>
-    <a href="#">🔍 Seguimiento</a>
-    <a href="#">🆘 Solicitar ayuda</a>
-  </section>
+                    <div class="card bg-white p-5 rounded-xl shadow-md hover:shadow-xl">
+                        <div class="bg-green-100 text-green-600 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-3">
+                            <i class="fas fa-laptop-house text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Recursos Tecnológicos</h3>
+                        <p class="text-gray-600 mb-3 text-sm">Préstamo de equipos y conectividad para tus estudios.</p>
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition text-sm" onclick="showScreen('postulacion')">Solicitar <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
 
-</body>
+                    <div class="card bg-white p-5 rounded-xl shadow-md hover:shadow-xl">
+                        <div class="bg-purple-100 text-purple-600 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-3">
+                            <i class="fas fa-user-graduate text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Tutorías Personalizadas</h3>
+                        <p class="text-gray-600 mb-3 text-sm">Acompañamiento académico para tu aprendizaje.</p>
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition text-sm" onclick="showScreen('soporte')">Agendar <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+
+                    <div class="card bg-white p-5 rounded-xl shadow-md hover:shadow-xl">
+                        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-3">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Seguimiento Académico</h3>
+                        <p class="text-gray-600 mb-3 text-sm">Monitoreo de tu progreso para identificar mejoras.</p>
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition text-sm" onclick="showScreen('seguimiento')">Ver progreso <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <div class="mt-10 text-center">
+                    <h2 class="text-2xl font-bold mb-6">¿Cómo podemos ayudarte hoy?</h2>
+                    <div class="flex flex-col sm:flex-row justify-center gap-3">
+                        <button class="btn-primary px-5 py-2.5 rounded-lg font-semibold w-full sm:w-auto" onclick="showScreen('postulacion')">
+                            <i class="fas fa-file-alt mr-2"></i>Postúlate a una beca
+                        </button>
+                        <button class="btn-secondary px-5 py-2.5 rounded-lg font-semibold w-full sm:w-auto" onclick="showScreen('estado')">
+                            <i class="fas fa-search mr-2"></i>Seguimiento
+                        </button>
+                        <button class="btn-secondary px-5 py-2.5 rounded-lg font-semibold w-full sm:w-auto" onclick="showScreen('soporte')">
+                            <i class="fas fa-headset mr-2"></i>Solicitar ayuda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Formulario de Postulación -->
+        <div id="postulacion" class="screen flex-grow pb-16">
+            <div class="bg-gray-100 py-6 px-4">
+                <div class="container mx-auto">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-1">Formulario de Postulación</h1>
+                    <p class="text-gray-600 text-sm">Complete el formulario para solicitar apoyo</p>
+                </div>
+            </div>
+
+            <div class="container mx-auto py-6 px-4">
+                <div class="bg-white rounded-xl shadow-md p-5 max-w-4xl mx-auto">
+                    <div class="mb-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-600 text-white rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">1</div>
+                            <h2 class="text-lg font-semibold">Información Personal</h2>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-1 text-sm" for="nombre">Nombre completo *</label>
+                                <input type="text" id="nombre" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Ingresa tu nombre completo">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-1 text-sm" for="correo">Correo electrónico *</label>
+                                <input type="email" id="correo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="ejemplo@correo.com">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-1 text-sm" for="programa">Programa académico *</label>
+                                <select id="programa" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <option value="" disabled selected>Selecciona tu programa</option>
+                                    <option value="ingenieria">Ingeniería de Sistemas</option>
+                                    <option value="administracion">Administración de Empresas</option>
+                                    <option value="psicologia">Psicología</option>
+                                    <option value="derecho">Derecho</option>
+                                    <option value="medicina">Medicina</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-1 text-sm" for="estrato">Estrato socioeconómico *</label>
+                                <select id="estrato" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                    <option value="" disabled selected>Selecciona tu estrato</option>
+                                    <option value="1">Estrato 1</option>
+                                    <option value="2">Estrato 2</option>
+                                    <option value="3">Estrato 3</option>
+                                    <option value="4">Estrato 4</option>
+                                    <option value="5">Estrato 5</option>
+                                    <option value="6">Estrato 6</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-600 text-white rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">2</div>
+                            <h2 class="text-lg font-semibold">Tipo de ayuda</h2>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="border border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition">
+                                <input type="radio" id="beca" name="tipo_ayuda" class="mr-2">
+                                <label for="beca" class="cursor-pointer font-medium text-sm">Beca económica</label>
+                                <p class="text-gray-600 text-xs mt-1">Apoyo financiero para matrícula y gastos académicos</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition">
+                                <input type="radio" id="tecnologia" name="tipo_ayuda" class="mr-2">
+                                <label for="tecnologia" class="cursor-pointer font-medium text-sm">Recursos tecnológicos</label>
+                                <p class="text-gray-600 text-xs mt-1">Préstamo de equipos y conectividad</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition">
+                                <input type="radio" id="tutoria" name="tipo_ayuda" class="mr-2">
+                                <label for="tutoria" class="cursor-pointer font-medium text-sm">Tutoría académica</label>
+                                <p class="text-gray-600 text-xs mt-1">Acompañamiento personalizado en asignaturas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-600 text-white rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">3</div>
+                            <h2 class="text-lg font-semibold">Documentación</h2>
+                        </div>
+                        
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">Arrastra y suelta tus documentos aquí o</p>
+                            <button class="bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-200 transition">Seleccionar archivos</button>
+                            <p class="text-gray-500 text-xs mt-2">Formatos permitidos: PDF, JPG, PNG (Máx. 5MB)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-end gap-3">
+                        <button class="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition order-2 sm:order-1" onclick="showScreen('inicio')">Cancelar</button>
+                        <button class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition order-1 sm:order-2" onclick="showScreen('confirmacion')">Enviar solicitud</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Confirmación -->
+        <div id="confirmacion" class="screen flex-grow flex items-center justify-center p-4 pb-16">
+            <div class="bg-white rounded-xl shadow-lg p-6 max-w-md w-full text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-2xl text-green-600"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800 mb-2">¡Solicitud enviada con éxito!</h2>
+                <p class="text-gray-600 mb-4 text-sm">Tu solicitud ha sido recibida y está siendo procesada. Te notificaremos por correo electrónico cuando tengamos una respuesta.</p>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-5">
+                    <p class="text-blue-800 font-medium text-sm">Número de solicitud: <span class="font-bold">BEC-2023-4582</span></p>
+                    <p class="text-blue-600 text-xs">Guarda este número para futuras consultas</p>
+                </div>
+                
+                <div class="flex flex-col gap-3">
+                    <button class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition" onclick="showScreen('estado')">
+                        <i class="fas fa-search mr-2"></i>Ver estado de solicitud
+                    </button>
+                    <button class="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition" onclick="showScreen('inicio')">
+                        <i class="fas fa-home mr-2"></i>Volver al inicio
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Estado de Solicitud -->
+        <div id="estado" class="screen flex-grow pb-16">
+            <div class="bg-gray-100 py-6 px-4">
+                <div class="container mx-auto">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-1">Estado de Solicitud</h1>
+                    <p class="text-gray-600 text-sm">Consulta el estado y detalles de tu solicitud</p>
+                </div>
+            </div>
+
+            <div class="container mx-auto py-6 px-4">
+                <div class="bg-white rounded-xl shadow-md p-5 max-w-4xl mx-auto">
+                    <div class="flex items-center mb-5">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-800">¡Tu solicitud fue aprobada!</h2>
+                            <p class="text-gray-600 text-xs">Solicitud #BEC-2023-4582 | 15/10/2023</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-6">
+                        <p class="text-green-800 text-sm">Se te ha otorgado una <span class="font-bold">Beca Académica del 50%</span> para el semestre actual.</p>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Detalles del recurso asignado</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="border border-gray-200 rounded-lg p-3">
+                                <h4 class="font-medium text-gray-800 mb-1 text-sm">Tipo de apoyo</h4>
+                                <p class="text-gray-600 text-sm">Beca Académica</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-3">
+                                <h4 class="font-medium text-gray-800 mb-1 text-sm">Porcentaje de cobertura</h4>
+                                <p class="text-gray-600 text-sm">50% del valor de la matrícula</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-3">
+                                <h4 class="font-medium text-gray-800 mb-1 text-sm">Periodo de vigencia</h4>
+                                <p class="text-gray-600 text-sm">Semestre 2023-II</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-3">
+                                <h4 class="font-medium text-gray-800 mb-1 text-sm">Requisitos de mantenimiento</h4>
+                                <p class="text-gray-600 text-sm">Promedio mínimo de 4.0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Próximos pasos</h3>
+                        <ol class="list-decimal list-inside space-y-1 text-gray-700 text-sm">
+                            <li>Descarga tu carta de aprobación</li>
+                            <li>Presenta la carta en la oficina de registro</li>
+                            <li>Completa tu proceso de matrícula antes del 30/10/2023</li>
+                        </ol>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition text-sm w-full">
+                            <i class="fas fa-download mr-2"></i>Descargar carta
+                        </button>
+                        <button class="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition text-sm w-full">
+                            <i class="fas fa-external-link-alt mr-2"></i>Acceder al recurso
+                        </button>
+                        <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition text-sm w-full" onclick="showScreen('soporte')">
+                            <i class="fas fa-headset mr-2"></i>Solicitar soporte
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Soporte Técnico -->
+        <div id="soporte" class="screen flex-grow pb-16">
+            <div class="bg-gray-100 py-6 px-4">
+                <div class="container mx-auto">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-1">Soporte Técnico</h1>
+                    <p class="text-gray-600 text-sm">Estamos aquí para ayudarte con cualquier duda</p>
+                </div>
+            </div>
+
+            <div class="container mx-auto py-6 px-4">
+                <!-- Tabs para móvil -->
+                <div class="mb-6 md:hidden">
+                    <div class="flex border-b border-gray-200">
+                        <button id="tabSolicitud" class="flex-1 py-2 font-medium text-center text-blue-600 border-b-2 border-blue-600" onclick="showTab('solicitudAyuda')">Solicitar ayuda</button>
+                        <button id="tabAgendar" class="flex-1 py-2 font-medium text-center text-gray-500" onclick="showTab('agendarAsistencia')">Agendar cita</button>
+                        <button id="tabFAQ" class="flex-1 py-2 font-medium text-center text-gray-500" onclick="showTab('preguntasFrecuentes')">FAQs</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div id="solicitudAyuda" class="bg-white rounded-xl shadow-md p-5 mb-6">
+                            <h2 class="text-xl font-semibold mb-4">Solicitar ayuda</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm" for="nombre-soporte">Nombre completo *</label>
+                                    <input type="text" id="nombre-soporte" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Ingresa tu nombre completo">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm" for="correo-soporte">Correo electrónico *</label>
+                                    <input type="email" id="correo-soporte" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="ejemplo@correo.com">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm" for="asunto">Asunto *</label>
+                                    <select id="asunto" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                        <option value="" disabled selected>Selecciona un asunto</option>
+                                        <option value="beca">Problemas con mi beca</option>
+                                        <option value="acceso">Problemas de acceso</option>
+                                        <option value="tecnicos">Problemas técnicos</option>
+                                        <option value="documentos">Documentación</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm" for="mensaje">Describe tu problema *</label>
+                                    <textarea id="mensaje" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Proporciona detalles sobre tu problema..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm">Adjuntar capturas (opcional)</label>
+                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center">
+                                        <button class="bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-200 transition">Seleccionar archivos</button>
+                                        <p class="text-gray-500 text-xs mt-1">Formatos: JPG, PNG, PDF (Máx. 5MB)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-5">
+                                <button class="w-full px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
+                                    <i class="fas fa-paper-plane mr-2"></i>Enviar solicitud de ayuda
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="agendarAsistencia" class="bg-white rounded-xl shadow-md p-5 mb-6 hidden md:block">
+                            <h2 class="text-xl font-semibold mb-4">Agendar asistencia</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm" for="fecha">Fecha *</label>
+                                    <input type="date" id="fecha" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm" for="hora">Hora *</label>
+                                    <select id="hora" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                        <option value="" disabled selected>Selecciona una hora</option>
+                                        <option value="9:00">9:00 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="14:00">2:00 PM</option>
+                                        <option value="15:00">3:00 PM</option>
+                                        <option value="16:00">4:00 PM</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-1 text-sm" for="tipo-asistencia">Tipo de asistencia *</label>
+                                    <select id="tipo-asistencia" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                        <option value="" disabled selected>Selecciona el tipo de asistencia</option>
+                                        <option value="videollamada">Videollamada</option>
+                                        <option value="llamada">Llamada telefónica</option>
+                                        <option value="chat">Chat en vivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-5">
+                                <button class="w-full px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
+                                    <i class="fas fa-calendar-check mr-2"></i>Agendar cita
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-1">
+                        <div id="preguntasFrecuentes" class="bg-white rounded-xl shadow-md p-5 mb-6 hidden md:block">
+                            <h2 class="text-lg font-semibold mb-3">Preguntas frecuentes</h2>
+                            
+                            <div class="space-y-3">
+                                <div class="border-b border-gray-200 pb-3">
+                                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 text-sm">
+                                        <span>¿Cómo puedo renovar mi beca?</span>
+                                        <i class="fas fa-chevron-down text-gray-400"></i>
+                                    </button>
+                                    <div class="mt-1 text-gray-600 text-xs">
+                                        Para renovar tu beca, debes mantener un promedio mínimo de 4.0 y realizar la solicitud de renovación un mes antes de finalizar el semestre actual.
+                                    </div>
+                                </div>
+                                
+                                <div class="border-b border-gray-200 pb-3">
+                                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 text-sm">
+                                        <span>¿Qué documentos necesito?</span>
+                                        <i class="fas fa-chevron-down text-gray-400"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="border-b border-gray-200 pb-3">
+                                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 text-sm">
+                                        <span>¿Cuánto tarda la aprobación?</span>
+                                        <i class="fas fa-chevron-down text-gray-400"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="border-b border-gray-200 pb-3">
+                                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 text-sm">
+                                        <span>¿Qué hago si tengo problemas?</span>
+                                        <i class="fas fa-chevron-down text-gray-400"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <button class="mt-3 text-blue-600 font-medium hover:text-blue-800 transition text-sm">
+                                Ver todas las preguntas <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-xl shadow-md p-5">
+                            <h2 class="text-lg font-semibold mb-3">Contacto directo</h2>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="bg-blue-100 text-blue-600 p-2 rounded-full mr-3 flex-shrink-0">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-sm">Línea de atención</p>
+                                        <p class="text-gray-600 text-xs">(+57) 601 234 5678</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="bg-blue-100 text-blue-600 p-2 rounded-full mr-3 flex-shrink-0">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-sm">Correo de soporte</p>
+                                        <p class="text-gray-600 text-xs">soporte@universidad.edu.co</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="bg-blue-100 text-blue-600 p-2 rounded-full mr-3 flex-shrink-0">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-sm">Horario de atención</p>
+                                        <p class="text-gray-600 text-xs">Lunes a viernes: 8:00 AM - 6:00 PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Seguimiento Académico -->
+        <div id="seguimiento" class="screen flex-grow pb-16">
+            <div class="bg-gray-100 py-6 px-4">
+                <div class="container mx-auto">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-1">Seguimiento Académico</h1>
+                    <p class="text-gray-600 text-sm">Monitorea tu progreso y rendimiento</p>
+                </div>
+            </div>
+
+            <div class="container mx-auto py-6 px-4">
+                <!-- Tabs para móvil -->
+                <div class="mb-6 md:hidden">
+                    <div class="flex border-b border-gray-200">
+                        <button id="tabProgreso" class="flex-1 py-2 font-medium text-center text-blue-600 border-b-2 border-blue-600" onclick="showTabSeguimiento('progresoSemestre')">Progreso</button>
+                        <button id="tabEncuesta" class="flex-1 py-2 font-medium text-center text-gray-500" onclick="showTabSeguimiento('encuestaSatisfaccion')">Encuesta</button>
+                        <button id="tabActividades" class="flex-1 py-2 font-medium text-center text-gray-500" onclick="showTabSeguimiento('proximasActividades')">Actividades</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div id="progresoSemestre" class="bg-white rounded-xl shadow-md p-5 mb-6">
+                            <h2 class="text-xl font-semibold mb-4">Progreso del semestre</h2>
+                            
+                            <div class="mb-6">
+                                <div class="flex justify-between mb-1">
+                                    <span class="font-medium text-gray-700 text-sm">Avance del semestre</span>
+                                    <span class="font-medium text-blue-600 text-sm">75%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="bg-blue-600 h-3 rounded-full progress-bar" style="width: 75%"></div>
+                                </div>
+                                <p class="text-gray-500 text-xs mt-1">Semestre 2023-II: Semana 12 de 16</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                <div class="border border-gray-200 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="font-semibold text-gray-800 text-sm">Promedio actual</h3>
+                                        <span class="text-xl font-bold text-green-600">4.2</span>
+                                    </div>
+                                    <p class="text-gray-600 text-xs">Tu promedio está por encima del mínimo requerido (4.0) para mantener tu beca.</p>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="font-semibold text-gray-800 text-sm">Asistencia</h3>
+                                        <span class="text-xl font-bold text-blue-600">92%</span>
+                                    </div>
+                                    <p class="text-gray-600 text-xs">Has asistido a 46 de 50 sesiones programadas hasta la fecha.</p>
+                                </div>
+                            </div>
+                            
+                            <h3 class="font-semibold text-gray-800 mb-3 text-sm">Rendimiento por asignatura</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-sm">Matemáticas Avanzadas</span>
+                                        <span class="font-medium text-sm">4.5</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-sm">Programación Web</span>
+                                        <span class="font-medium text-sm">4.8</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 96%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-sm">Bases de Datos</span>
+                                        <span class="font-medium text-sm">3.9</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-sm">Inglés Técnico</span>
+                                        <span class="font-medium text-sm">4.0</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-sm">Ética Profesional</span>
+                                        <span class="font-medium text-sm">3.7</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 74%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="encuestaSatisfaccion" class="bg-white rounded-xl shadow-md p-5 hidden md:block">
+                            <h2 class="text-xl font-semibold mb-4">Encuesta de satisfacción</h2>
+                            <p class="text-gray-600 mb-4 text-sm">Tu opinión es importante para mejorar nuestros servicios. Por favor, responde las siguientes preguntas:</p>
+                            
+                            <div class="space-y-5">
+                                <div>
+                                    <p class="font-medium text-gray-800 mb-2 text-sm">1. ¿Cómo calificarías el apoyo recibido a través del programa de becas?</p>
+                                    <div class="flex flex-wrap gap-3">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="satisfaccion" class="mr-1">
+                                            <span class="text-sm">Excelente</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="satisfaccion" class="mr-1">
+                                            <span class="text-sm">Bueno</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="satisfaccion" class="mr-1">
+                                            <span class="text-sm">Regular</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="satisfaccion" class="mr-1">
+                                            <span class="text-sm">Deficiente</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <p class="font-medium text-gray-800 mb-2 text-sm">2. ¿El apoyo recibido ha contribuido a mejorar tu desempeño académico?</p>
+                                    <div class="flex flex-wrap gap-3">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="desempeno" class="mr-1">
+                                            <span class="text-sm">Mucho</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="desempeno" class="mr-1">
+                                            <span class="text-sm">Bastante</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="desempeno" class="mr-1">
+                                            <span class="text-sm">Poco</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="desempeno" class="mr-1">
+                                            <span class="text-sm">Nada</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <p class="font-medium text-gray-800 mb-2 text-sm">3. ¿Qué aspectos del programa de apoyo consideras que podrían mejorar?</p>
+                                    <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Escribe tu respuesta aquí..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-5">
+                                <button class="w-full px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
+                                    <i class="fas fa-paper-plane mr-2"></i>Enviar retroalimentación
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-1">
+                        <div id="proximasActividades" class="bg-white rounded-xl shadow-md p-5 mb-6 hidden md:block">
+                            <h2 class="text-lg font-semibold mb-3">Próximas actividades</h2>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-start border-l-4 border-blue-500 pl-3">
+                                    <div class="mr-3 flex-shrink-0">
+                                        <div class="bg-blue-100 text-blue-600 rounded-lg p-1.5 text-center min-w-[50px]">
+                                            <span class="block text-xs">OCT</span>
+                                            <span class="block text-lg font-bold">25</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-sm">Examen parcial - Bases de Datos</h3>
+                                        <p class="text-gray-500 text-xs">10:00 AM - Aula Virtual 3</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start border-l-4 border-green-500 pl-3">
+                                    <div class="mr-3 flex-shrink-0">
+                                        <div class="bg-green-100 text-green-600 rounded-lg p-1.5 text-center min-w-[50px]">
+                                            <span class="block text-xs">OCT</span>
+                                            <span class="block text-lg font-bold">27</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-sm">Entrega proyecto - Programación Web</h3>
+                                        <p class="text-gray-500 text-xs">11:59 PM - Plataforma virtual</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start border-l-4 border-purple-500 pl-3">
+                                    <div class="mr-3 flex-shrink-0">
+                                        <div class="bg-purple-100 text-purple-600 rounded-lg p-1.5 text-center min-w-[50px]">
+                                            <span class="block text-xs">NOV</span>
+                                            <span class="block text-lg font-bold">02</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-sm">Tutoría - Matemáticas Avanzadas</h3>
+                                        <p class="text-gray-500 text-xs">3:00 PM - Sala de tutorías</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start border-l-4 border-yellow-500 pl-3">
+                                    <div class="mr-3 flex-shrink-0">
+                                        <div class="bg-yellow-100 text-yellow-600 rounded-lg p-1.5 text-center min-w-[50px]">
+                                            <span class="block text-xs">NOV</span>
+                                            <span class="block text-lg font-bold">05</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-sm">Renovación de beca - Fecha límite</h3>
+                                        <p class="text-gray-500 text-xs">Todo el día</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-md p-5">
+                            <h2 class="text-lg font-semibold mb-3">Recursos recomendados</h2>
+                            
+                            <div class="space-y-3">
+                                <div class="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 hover:border-blue-300 transition cursor-pointer">
+                                    <div class="flex items-center">
+                                        <div class="bg-red-100 text-red-600 p-1.5 rounded-full mr-2 flex-shrink-0">
+                                            <i class="fas fa-file-pdf text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-sm">Guía de estudio - Bases de Datos</h3>
+                                            <p class="text-gray-500 text-xs">PDF - 2.3 MB</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 hover:border-blue-300 transition cursor-pointer">
+                                    <div class="flex items-center">
+                                        <div class="bg-blue-100 text-blue-600 p-1.5 rounded-full mr-2 flex-shrink-0">
+                                            <i class="fas fa-video text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-sm">Tutorial - Programación Web</h3>
+                                            <p class="text-gray-500 text-xs">Video - 45 min</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 hover:border-blue-300 transition cursor-pointer">
+                                    <div class="flex items-center">
+                                        <div class="bg-green-100 text-green-600 p-1.5 rounded-full mr-2 flex-shrink-0">
+                                            <i class="fas fa-link text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-sm">Recursos adicionales - Matemáticas</h3>
+                                            <p class="text-gray-500 text-xs">Enlace externo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de navegación inferior para móvil -->
+        <div class="bottom-nav py-2 px-4 md:hidden">
+            <div class="flex justify-around">
+                <button class="flex flex-col items-center" onclick="showScreen('inicio')">
+                    <i class="fas fa-home text-gray-600"></i>
+                    <span class="text-xs mt-1 text-gray-600">Inicio</span>
+                </button>
+                <button class="flex flex-col items-center" onclick="showScreen('postulacion')">
+                    <i class="fas fa-file-alt text-gray-600"></i>
+                    <span class="text-xs mt-1 text-gray-600">Postular</span>
+                </button>
+                <button class="flex flex-col items-center" onclick="showScreen('seguimiento')">
+                    <i class="fas fa-chart-line text-gray-600"></i>
+                    <span class="text-xs mt-1 text-gray-600">Seguimiento</span>
+                </button>
+                <button class="flex flex-col items-center" onclick="showScreen('soporte')">
+                    <i class="fas fa-headset text-gray-600"></i>
+                    <span class="text-xs mt-1 text-gray-600">Soporte</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-6 px-4">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div>
+                        <h3 class="text-base font-semibold mb-3">Ecosistema de Aprendizaje Virtual</h3>
+                        <p class="text-gray-400 text-sm">Sistema de Becas y Soporte para Permanencia Estudiantil Virtual</p>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-semibold mb-3">Enlaces rápidos</h3>
+                        <ul class="space-y-1 text-gray-400 text-sm">
+                            <li><a href="#" class="hover:text-white transition">Inicio</a></li>
+                            <li><a href="#" class="hover:text-white transition">Postulación</a></li>
+                            <li><a href="#" class="hover:text-white transition">Seguimiento</a></li>
+                            <li><a href="#" class="hover:text-white transition">Soporte</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-semibold mb-3">Contacto</h3>
+                        <ul class="space-y-1 text-gray-400 text-sm">
+                            <li><i class="fas fa-envelope mr-2"></i> contacto@universidad.edu.co</li>
+                            <li><i class="fas fa-phone mr-2"></i> (+57) 601 234 5678</li>
+                            <li><i class="fas fa-map-marker-alt mr-2"></i> Calle 123 #45-67, Bogotá</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-semibold mb-3">Síguenos</h3>
+                        <div class="flex space-x-3">
+                            <a href="#" class="bg-gray-700 hover:bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center transition">
+                                <i class="fab fa-facebook-f text-sm"></i>
+                            </a>
+                            <a href="#" class="bg-gray-700 hover:bg-blue-400 w-8 h-8 rounded-full flex items-center justify-center transition">
+                                <i class="fab fa-twitter text-sm"></i>
+                            </a>
+                            <a href="#" class="bg-gray-700 hover:bg-red-600 w-8 h-8 rounded-full flex items-center justify-center transition">
+                                <i class="fab fa-youtube text-sm"></i>
+                            </a>
+                            <a href="#" class="bg-gray-700 hover:bg-pink-600 w-8 h-8 rounded-full flex items-center justify-center transition">
+                                <i class="fab fa-instagram text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-400 text-xs">
+                    <p>&copy; 2023 Universidad Virtual. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar la pantalla seleccionada
+            document.getElementById(screenId).classList.add('active');
+            
+            // Scroll al inicio
+            window.scrollTo(0, 0);
+            
+            // Actualizar navegación inferior
+            updateBottomNav(screenId);
+        }
+        
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('active');
+        }
+        
+        function showTab(tabId) {
+            // Ocultar todos los contenidos de tabs
+            document.getElementById('solicitudAyuda').classList.add('hidden');
+            document.getElementById('agendarAsistencia').classList.add('hidden');
+            document.getElementById('preguntasFrecuentes').classList.add('hidden');
+            
+            // Mostrar el contenido seleccionado
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // Actualizar estilos de los botones de tab
+            document.getElementById('tabSolicitud').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            document.getElementById('tabSolicitud').classList.add('text-gray-500');
+            document.getElementById('tabAgendar').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            document.getElementById('tabAgendar').classList.add('text-gray-500');
+            document.getElementById('tabFAQ').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            document.getElementById('tabFAQ').classList.add('text-gray-500');
+            
+            // Activar el tab seleccionado
+            if (tabId === 'solicitudAyuda') {
+                document.getElementById('tabSolicitud').classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                document.getElementById('tabSolicitud').classList.remove('text-gray-500');
+            } else if (tabId === 'agendarAsistencia') {
+                document.getElementById('tabAgendar').classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                document.getElementById('tabAgendar').classList.remove('text-gray-500');
+            } else if (tabId === 'preguntasFrecuentes') {
+                document.getElementById('tabFAQ').classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                document.getElementById('tabFAQ').classList.remove('text-gray-500');
+            }
+        }
+        
+        function showTabSeguimiento(tabId) {
+            // Ocultar todos los contenidos de tabs
+            document.getElementById('progresoSemestre').classList.add('hidden');
+            document.getElementById('encuestaSatisfaccion').classList.add('hidden');
+            document.getElementById('proximasActividades').classList.add('hidden');
+            
+            // Mostrar el contenido seleccionado
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // Actualizar estilos de los botones de tab
+            document.getElementById('tabProgreso').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            document.getElementById('tabProgreso').classList.add('text-gray-500');
+            document.getElementById('tabEncuesta').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            document.getElementById('tabEncuesta').classList.add('text-gray-500');
+            document.getElementById('tabActividades').classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            document.getElementById('tabActividades').classList.add('text-gray-500');
+            
+            // Activar el tab seleccionado
+            if (tabId === 'progresoSemestre') {
+                document.getElementById('tabProgreso').classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                document.getElementById('tabProgreso').classList.remove('text-gray-500');
+            } else if (tabId === 'encuestaSatisfaccion') {
+                document.getElementById('tabEncuesta').classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                document.getElementById('tabEncuesta').classList.remove('text-gray-500');
+            } else if (tabId === 'proximasActividades') {
+                document.getElementById('tabActividades').classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                document.getElementById('tabActividades').classList.remove('text-gray-500');
+            }
+        }
+        
+        function updateBottomNav(activeScreen) {
+            // Actualizar estilos de la barra de navegación inferior
+            const navButtons = document.querySelectorAll('.bottom-nav button');
+            navButtons.forEach(button => {
+                button.querySelector('i').classList.remove('text-blue-600');
+                button.querySelector('i').classList.add('text-gray-600');
+                button.querySelector('span').classList.remove('text-blue-600');
+                button.querySelector('span').classList.add('text-gray-600');
+            });
+            
+            // Activar el botón correspondiente a la pantalla actual
+            if (activeScreen === 'inicio') {
+                navButtons[0].querySelector('i').classList.add('text-blue-600');
+                navButtons[0].querySelector('i').classList.remove('text-gray-600');
+                navButtons[0].querySelector('span').classList.add('text-blue-600');
+                navButtons[0].querySelector('span').classList.remove('text-gray-600');
+            } else if (activeScreen === 'postulacion') {
+                navButtons[1].querySelector('i').classList.add('text-blue-600');
+                navButtons[1].querySelector('i').classList.remove('text-gray-600');
+                navButtons[1].querySelector('span').classList.add('text-blue-600');
+                navButtons[1].querySelector('span').classList.remove('text-gray-600');
+            } else if (activeScreen === 'seguimiento') {
+                navButtons[2].querySelector('i').classList.add('text-blue-600');
+                navButtons[2].querySelector('i').classList.remove('text-gray-600');
+                navButtons[2].querySelector('span').classList.add('text-blue-600');
+                navButtons[2].querySelector('span').classList.remove('text-gray-600');
+            } else if (activeScreen === 'soporte') {
+                navButtons[3].querySelector('i').classList.add('text-blue-600');
+                navButtons[3].querySelector('i').classList.remove('text-gray-600');
+                navButtons[3].querySelector('span').classList.add('text-blue-600');
+                navButtons[3].querySelector('span').classList.remove('text-gray-600');
+            }
+        }
+        
+        // Inicializar las pestañas en móvil
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar las pestañas correctas al inicio
+            if (window.innerWidth < 768) {
+                showTab('solicitudAyuda');
+                showTabSeguimiento('progresoSemestre');
+            }
+            
+            // Inicializar la barra de navegación inferior
+            updateBottomNav('inicio');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9430ace367bcd9dd',t:'MTc0Nzc5NDg3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
